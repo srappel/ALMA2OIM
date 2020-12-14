@@ -12,25 +12,18 @@ print('The index for 034 is: ' + str(almaData[0].index('034')))
 
 # Output CSV with OIM Fields
 outputCSV = open('C:\\Users\\srapp\\Desktop\\Alma_to_AGSL_Nautical\\Alma2CSV.csv', 'w', newline='', encoding='utf8') 
-header = ['label',           
-          'west',
+header = ['label', # Will be filled with call number (which includes sheet number for AGSL Nautical Charts) found in 852 $h           
+          'west', 
           'east',
           'north',
           'south',
-          'location',
-          'scale',
+          'location', # Could be filled with Geographic locations populated from the record
+          'scale', # from 034
           'title',
           'edition',
-          'available',
-          'physHold',
-          'digHold',
-          'thumbUrl',
-          'iiifUrl',
-          'downloadUrl',
-          'websiteUrl',
+          'available', # "yes"
+          'physHold', # "yes"
           'primeMer',
-          'bathLines',
-          'bathInterv',
           'projection',
           'publisher',
           'datePub',
@@ -337,10 +330,10 @@ def processRow(row):
 
     # Grab the recId from the Alma '946' field    
 
-    recordRegex = re.compile(r'(\$a\s)(.*)')
+    recordRegex = re.compile(r'agsmap\d\d\d\d\d\d|am\d\d\d\d\d\d')
     recMO = recordRegex.search(row[i])
     if not recMO is None:
-        recId = recMO[2].strip()
+        recId = recMO.strip()
     else:
         recId = ''   
 
@@ -382,7 +375,7 @@ def processRow(row):
 ##    rowDict['publisher'] = publisher
 
     ## available
-    available = 1
+    available = 'yes'
 
     # physHold
     physHold = 'yes'
