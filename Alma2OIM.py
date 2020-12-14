@@ -3,7 +3,7 @@ import re
 from collections import OrderedDict
 import pygeoj
 
-almaFile = open('C:/alma2csv/AGS_French_Chart_Info.csv', encoding='utf8') # path to the exported csv from Alma
+almaFile = open("C:\Users\srapp\Downloads\AGS_British_Admirality_Chart_Info-csv.csv") # path to the exported csv from Alma
 
 almaReader = csv.reader(almaFile)
 almaData = list(almaReader)
