@@ -449,6 +449,7 @@ for row in almaData:
     if rowDict['west'] is not None or rowDict['east'] is not None or rowDict['north'] is not None or rowDict['south'] is not None:
         if rowDict['west'] > rowDict['east']:
             print('antimeridian conflict!!')
+            print(str(rowDict['label']))
             almaGeo.add_feature(properties={"label": rowDict['label'], "west": rowDict['west'], "east": rowDict['east'], "north": rowDict['north'],
                                 "south": rowDict['south'], "scale": rowDict['scale'], "title": rowDict['title'],
                                 "edition": rowDict['edition'], "available": rowDict['available'], "physHold": rowDict['physHold'],
