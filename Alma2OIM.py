@@ -3,7 +3,7 @@ import re
 from collections import OrderedDict
 import pygeoj
 
-almaFile = open("C:\Users\srapp\Downloads\AGS_British_Admirality_Chart_Info-csv.csv") # path to the exported csv from Alma
+almaFile = open('C:\\Users\\srapp\\Desktop\\Alma_to_AGSL_Nautical\\RussiaChartWBB.csv', encoding='utf8') # path to the exported csv from Alma
 
 almaReader = csv.reader(almaFile)
 almaData = list(almaReader)
@@ -11,7 +11,7 @@ almaData = list(almaReader)
 print('The index for 034 is: ' + str(almaData[0].index('034')))
 
 # Output CSV with OIM Fields
-outputCSV = open('C:/alma2csv/Alma2CSV.csv', 'w', newline='', encoding='utf8') 
+outputCSV = open('C:\\Users\\srapp\\Desktop\\Alma_to_AGSL_Nautical\\Alma2CSV.csv', 'w', newline='', encoding='utf8') 
 header = ['label',           
           'west',
           'east',
@@ -195,20 +195,20 @@ def processRow(row):
     rowDict['publisher'] = publisher
 
     ##########################
-    ### From the 490 Field ###
+    ### From the 852 Field ###
     ##########################
 
     ## label
 
-    #Find the index for 490:
-    i = almaData[0].index('490')
+    #Find the index for 852:
+    i = almaData[0].index('852')
 
     # Grab the label field (title part 2, usually a sheet number)
 
-    recordRegex = re.compile(r'(\$v\s)(.*)')
+    recordRegex = re.compile(r'(\$h\s)(.*)(\$z?)')
     recordMO = recordRegex.search(row[i])
     if not recordMO is None:
-        label = recordMO[2].strip()
+        label = recordMO.group(2).strip()
     else:
         label = ''
 
@@ -216,7 +216,7 @@ def processRow(row):
 
     rowDict['label'] = label
 
-    recordRegex = re.compile(r'(\$v\s)(.*)')
+    recordRegex = re.compile(r'(\$h\s)(.*)(\$z?)')
     instcallMO = recordRegex.search(row[i])
     if not instcallMO is None:
         instCallNo = recordMO[2].strip()
