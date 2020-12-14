@@ -330,10 +330,10 @@ def processRow(row):
 
     # Grab the recId from the Alma '946' field    
 
-    recordRegex = re.compile(r'agsmap\d\d\d\d\d\d|am\d\d\d\d\d\d')
+    recordRegex = re.compile(r'(agsmap\d\d\d\d\d\d)|(am\d\d\d\d\d\d)')
     recMO = recordRegex.search(row[i])
     if not recMO is None:
-        recId = recMO.strip()
+        recId = recMO[0].strip()
     else:
         recId = ''   
 
