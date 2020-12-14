@@ -404,7 +404,7 @@ def processRow(row):
 
     ## primeMer
 
-    primeMer = 131 #Greenwich   
+    primeMer = 'Greenwich' #Greenwich   
 
     # populate all the series fields into the row dictionary
     rowDict['label'] = label    
@@ -441,23 +441,29 @@ def processRow(row):
 # create a new geojson for the OIM Data
 almaGeo = pygeoj.new()
 
+
 for row in almaData:
     rowDict = processRow(row)
     outputWriter.writerow(rowDict)
     # skip any rows that do not have coordinates
-    if rowDict['west'] is not None or rowDict['east'] is not None or rowDict['north'] is not None or rowDict['south'] is not None:        
-        # Add the values from the dictionary into the geojson feature properties and coordinates
-        almaGeo.add_feature(properties={"label": rowDict['label'], "west": rowDict['west'], "east": rowDict['east'], "north": rowDict['north'],
-                                        "south": rowDict['south'], "scale": rowDict['scale'], "title": rowDict['title'],
-                                        "edition": rowDict['edition'], "available": rowDict['available'], "physHold": rowDict['physHold'],
-                                        "primeMer": rowDict['primeMer'], "projection": rowDict['projection'], "publisher": rowDict['publisher'],
-                                        "datePub": rowDict['datePub'], "color": rowDict['color'], "recId": rowDict['recId'], "note": rowDict['note']},
-                       geometry={"type":"Polygon", "coordinates":[[(rowDict['west'],rowDict['north']),(rowDict['west'],rowDict['south']),(rowDict['east'],
-                                                                    rowDict['south']), (rowDict['east'], rowDict['north']), (rowDict['west'], rowDict['north'])]]} )
+    if rowDict['west'] is not None or rowDict['east'] is not None or rowDict['north'] is not None or rowDict['south'] is not None:
+        if rowDict['west'] > rowDict['east']:
+            print('antimeridian conflict!!')
+            almaGeo.add_feature(properties={"label": rowDict['label'], "west": rowDict['west'], "east": rowDict['east'], "north": rowDict['north'],
+                                "south": rowDict['south'], "scale": rowDict['scale'], "title": rowDict['title'],
+                                "edition": rowDict['edition'], "available": rowDict['available'], "physHold": rowDict['physHold'],
+                                "primeMer": rowDict['primeMer'], "projection": rowDict['projection'], "publisher": rowDict['publisher'],
+                                "datePub": rowDict['datePub'], "color": rowDict['color'], "recId": rowDict['recId'], "note": rowDict['note']},
+                geometry={"type":"MultiPolygon", "coordinates":[[[(rowDict['west'],rowDict['north']),(rowDict['west'],rowDict['south']),(180,rowDict['south']), (180, rowDict['north']), (rowDict['west'], rowDict['north'])]],[[(-180,rowDict['north']),(-180,rowDict['south']),(rowDict['east'],rowDict['south']), (rowDict['east'], rowDict['north']), (-180, rowDict['north'])]]]} )
+        else:
+            # Add the values from the dictionary into the geojson feature properties and coordinates
+            almaGeo.add_feature(properties={"label": rowDict['label'], "west": rowDict['west'], "east": rowDict['east'], "north": rowDict['north'],
+                                            "south": rowDict['south'], "scale": rowDict['scale'], "title": rowDict['title'],
+                                            "edition": rowDict['edition'], "available": rowDict['available'], "physHold": rowDict['physHold'],
+                                            "primeMer": rowDict['primeMer'], "projection": rowDict['projection'], "publisher": rowDict['publisher'],
+                                            "datePub": rowDict['datePub'], "color": rowDict['color'], "recId": rowDict['recId'], "note": rowDict['note']},
+                        geometry={"type":"Polygon", "coordinates":[[(rowDict['west'],rowDict['north']),(rowDict['west'],rowDict['south']),(rowDict['east'],
+                                                                        rowDict['south']), (rowDict['east'], rowDict['north']), (rowDict['west'], rowDict['north'])]]} )
 outputCSV.close()
 # Output a geojson with the values of the dictionary 
 almaGeo.save("alma2geo.geojson")
-
-
-
-
