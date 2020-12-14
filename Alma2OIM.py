@@ -447,7 +447,7 @@ for row in almaData:
     rowDict = processRow(row)
     outputWriter.writerow(rowDict)
     # skip any rows that do not have coordinates
-    if rowDict['west'] is not None or rowDict['east'] is not None or rowDict['north'] is not None or rowDict['south'] is not None:
+    if rowDict['west'] is not None and rowDict['east'] is not None and rowDict['north'] is not None and rowDict['south'] is not None: 
         if rowDict['west'] > rowDict['east']:
             print('antimeridian conflict!!')
             print(str(rowDict['label']))
