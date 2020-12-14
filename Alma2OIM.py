@@ -3,7 +3,8 @@ import re
 from collections import OrderedDict
 import pygeoj
 
-almaFile = open('C:\\Users\\srapp\\Desktop\\Alma_to_AGSL_Nautical\\RussiaChartWBB.csv', encoding='utf8') # path to the exported csv from Alma
+almaFile = open('C:\\Users\\srapp\\Desktop\\Alma_to_AGSL_Nautical\\GermanChartsWBB.csv', encoding='utf8') # path to the exported csv from Alma
+outputGeoJSON_Filename = "C:\\Users\\srapp\\Desktop\\Alma_to_AGSL_Nautical\\GermanCharts.geojson"
 
 almaReader = csv.reader(almaFile)
 almaData = list(almaReader)
@@ -467,4 +468,4 @@ for row in almaData:
                                                                         rowDict['south']), (rowDict['east'], rowDict['north']), (rowDict['west'], rowDict['north'])]]} )
 outputCSV.close()
 # Output a geojson with the values of the dictionary 
-almaGeo.save("alma2geo.geojson")
+almaGeo.save(outputGeoJSON_Filename)
